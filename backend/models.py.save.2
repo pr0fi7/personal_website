@@ -9,36 +9,8 @@ class Portfolios:
     def __init__(self, conn_params):
         self.conn = psycopg2.connect(**conn_params)
         self._create_tables()
-        
-    def _create_tables(self):
-        with self.conn.cursor() as cursor:
-            # Run as a single transaction to avoid multiple workers executing it simultaneously
-            self.conn.autocommit = True  
-            try:
-                cursor.execute('''
-                    DO $$ 
-                    BEGIN 
-                        IF NOT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pgcrypto') THEN
-                            CREATE EXTENSION pgcrypto;
-                        END IF;
-                    END $$;
-                ''')
-                cursor.execute('''
-                    CREATE TABLE IF NOT EXISTS public.portfolio (
-                        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                        "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        "title" TEXT,
-                        "description" TEXT,
-                        "image" TEXT,
-                        "link" TEXT
-                    );
-                ''')
-            except Exception as e:
-                print("Error creating tables:", e)
-            finally:
-                self.conn.autocommit = False  # Reset autocommit
 
-
+    
     def get_all(self):
         with self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             cursor.execute("SELECT * FROM public.portfolio")
