@@ -18,6 +18,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+      
     ports:
       - "5432:5432"
     healthcheck:
@@ -27,17 +28,20 @@ services:
       timeout: 5s
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend  # 👈 Ensure this points to the `backend/` folder
+      dockerfile: Dockerfile  
     restart: always
     depends_on:
       postgres:
         condition: service_healthy  # 👈 Wait for PostgreSQL to be ready
     environment:
-      DB_HOST: postgres
-      DB_USER: myuser
-      DB_PASSWORD: mypassword
-      DB_NAME: mydatabase
-      DB_PORT: 5432
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      
     ports:
       - "8000:8000"
 
