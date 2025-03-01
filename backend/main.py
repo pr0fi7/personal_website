@@ -19,7 +19,7 @@ class PortfolioItem(BaseModel):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  
+    allow_origins=["http://localhost:5173", "http://64.226.78.105/", "http://134.58.253.20/"],
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],  
