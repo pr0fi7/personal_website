@@ -58,11 +58,11 @@ class Portfolios:
         return cursor.rowcount > 0  # Return True if delete was successful
 
 db_params = {
-    "dbname": 'postgres',
-    "user": os.getenv("DB_USER"),
-    "password": os.getenv("DB_PASSWORD"),
-    "host": 'localhost',
-    "port": os.getenv("DB_PORT")
+    "dbname": os.getenv("DB_NAME", "mydatabase"),
+    "user": os.getenv("DB_USER", "myuser"),
+    "password": os.getenv("DB_PASSWORD", "mypassword"),
+    "host": os.getenv("DB_HOST", "postgres"),  # 👈 Use `postgres`, NOT `localhost`
+    "port": os.getenv("DB_PORT", "5432"),
 }
 
 print(db_params)
