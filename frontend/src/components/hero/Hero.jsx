@@ -47,7 +47,7 @@ const Hero = () => {
           initial="initial"
           animate="animate"
         >
-          <motion.h2 variants={textVariants}>MYKHAIL SHEVCHENKO</motion.h2>
+          <motion.h2 variants={textVariants}>Mark SHEVCHENKO</motion.h2>
           <motion.h1 variants={textVariants}>
             Web developer and AI enthusiast
           </motion.h1>
