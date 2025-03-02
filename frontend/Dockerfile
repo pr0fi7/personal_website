@@ -1,5 +1,5 @@
-# Use official Node.js image
-FROM node:18
+# Build Stage
+FROM node:18 AS build
 
 WORKDIR /app
 
@@ -7,14 +7,21 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the rest of the frontend code
+# Copy frontend files and build
 COPY . .
-
-# Build the React/Vite project
 RUN npm run build
 
-# Use Nginx to serve the frontend
+# Production Stage: Serve with Nginx
 FROM nginx:latest
-COPY --from=0 /app/dist /usr/share/nginx/html
+
+# Remove default Nginx index.html
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy the built frontend files from the build stage
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Replace default Nginx config with our custom one
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
