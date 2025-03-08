@@ -1,24 +1,12 @@
 version: '3.8'
 
-services:
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./frontend/nginx/default.conf:/etc/nginx/conf.d/default.conf 
-    depends_on:
-      - backend
-    networks:
-      - mynetwork
-
-
+services: 
   frontend:
     build: ./frontend
     container_name: frontend
     restart: always
+    ports: 
+      - "80:80"
     networks:
       - mynetwork
     depends_on:

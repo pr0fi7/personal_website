@@ -1,36 +1,52 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const ADMIN_PASSWORD = "mysecurepassword";  // Change this to a secure password!
+import axios from "axios";
 
 const AdminLogin = ({ setIsAuthenticated }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  async function handleLogin(e) {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    try {
+      const response = await axios.post("/api/login", { password });
+      const token = response.data.access_token;
+      localStorage.setItem("access_token", token);
+      console.log("Login successful, token stored!");
       setIsAuthenticated(true);
-      localStorage.setItem("isAdmin", "true");  // Save login state
-      navigate("/admin");  // Redirect to admin panel
-    } else {
-      alert("Incorrect password!");
+      navigate("/admin");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Invalid credentials");
     }
-  };
+  }
 
   return (
-    <div>
-      <h1>Admin Login</h1>
-      <form onSubmit={handleLogin}>
-        <input 
-          type="password" 
-          placeholder="Enter admin password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card shadow p-4">
+            <h2 className="card-title text-center mb-4">Admin Login</h2>
+            <form onSubmit={handleLogin}>
+              <div className="mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Enter admin password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="d-grid">
+                <button type="submit" className="btn btn-primary">
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

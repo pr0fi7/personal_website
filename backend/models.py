@@ -59,7 +59,7 @@ class Portfolios:
                 UPDATE public.portfolio
                 SET title = %s, description = %s, image = %s, link = %s
                 WHERE id = %s
-            ''', (title, description, image, id, link))
+            ''', (title, description, image, link, id))
         self.conn.commit()
         return cursor.rowcount > 0  # Return True if update was successful
 

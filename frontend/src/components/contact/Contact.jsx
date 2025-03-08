@@ -32,7 +32,7 @@ const Contact = () => {
     const body = formRef.current.message.value;
   
     try {
-      const response = await axios.post("http://127.0.0.1:8000/send-email", {
+      const response = await axios.post("/api/send-email", {
         from_email,
         subject,
         body

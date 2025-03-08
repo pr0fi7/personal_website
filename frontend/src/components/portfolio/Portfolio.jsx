@@ -34,7 +34,7 @@ const Portfolio = () => {
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/portfolios")
+    axios.get("http://localhost:8000/portfolios")
       .then(response => setItems(response.data.data))
       .catch(error => console.error("Error fetching portfolio data:", error));
   }, []);
